@@ -16,8 +16,9 @@ Screen:
         left_action_items: [["menu", lambda x: app.callback()]]
         right_action_items: [["exit-to-app", lambda x: app.stop()]]
         md_bg_color: [.99,.87,.45,1]# app.theme_cls.accent_color
-        specific_text_color: [.1,.1,.3,1]#app.theme_cls.accent_color
-        elevation: 10
+        text_color: [.1,.1,.3,1]#app.theme_cls.accent_color
+        specific_text_color: [.1,.1,.3,1]#
+        elevation: 5
         pos_hint: {"top": 1, "center_x": .5}
 
     MDBoxLayout:
@@ -36,7 +37,7 @@ Screen:
             MDCard:
                 id: cd_first
                 pos_hint: {"center_x": .5, "top": 1}
-                elevation: 10
+                elevation: 5
 
                 MDBoxLayout:
                     id: c_input
@@ -60,14 +61,17 @@ Screen:
             ScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
-                MDLabel:
-                    size_hint_y: None
-                    height: self.texture_size[1]
-                    text_size: self.width, None
-                    text_color: [1,1,1,1]
-                    padding: 10, 10
-                    text:
-                        'really some amazing text\n' * 100
+                MDBoxLayout:
+                    orientation: "vertical"
+                    MDLabel:
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        text_color: [1,1,1,1]
+                        padding: 10, 10
+                        text:
+                            'really some amazing text\n' * 20
+
 
 #        ScreenManager:
 #            MDScreen:
