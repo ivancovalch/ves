@@ -1,21 +1,16 @@
 [app]
 title = Weigt
 package.name = CreditOverpay
-package.domain = org.test # (str) Package domain (needed for android/ios packaging)
-source.dir = . # (str) Source code where the main.py live
-
+package.domain = org.test
+source.dir = .
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
-
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*, assets/images/*.png
-
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
-
 # (list) List of directory to exclude (let empty to not exclude anything)
 #source.exclude_dirs = tests, bin
-
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
 
@@ -64,8 +59,6 @@ osx.kivy_version = 1.9.1
 
 #
 # Android specific
-#
-
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
 
@@ -74,7 +67,7 @@ fullscreen = 0
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-#android.presplash_color = #FFFFFF
+android.presplash_color = silver
 
 # (list) Permissions
 #android.permissions = INTERNET

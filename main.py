@@ -3,8 +3,6 @@ from kivy.lang import Builder
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList
-from kivymd.uix.screen import Screen
-
 
 
 class MainApp(MDApp):
