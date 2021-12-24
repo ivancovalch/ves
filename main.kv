@@ -1,3 +1,11 @@
+<LabelEnter@MDLabel>: #Текстовый элемент ввода данных
+    text: "Ввод данных кредита"
+    font_style: "H1"
+    theme_text_color: "Primary"
+    spacing: "5dp"
+    size_hint_y: None
+    size_hint_y: "30dp"
+
 Screen:
     title: "Калькулятор фигуры"
    #ti_loan: ti_loan
@@ -7,16 +15,13 @@ Screen:
         type: "top"
         left_action_items: [["menu", lambda x: app.callback()]]
         right_action_items: [["exit-to-app", lambda x: app.stop()]]
-        #md_bg_color: [0,0,0,1]# app.theme_cls.accent_color
-        #specific_text_color: [.9,.9,.9,1]#app.theme_cls.accent_color
+        md_bg_color: [.99,.87,.45,1]# app.theme_cls.accent_color
+        specific_text_color: [.1,.1,.3,1]#app.theme_cls.accent_color
         elevation: 10
         pos_hint: {"top": 1, "center_x": .5}
-        #pos_hint_y: None
-        #pos_hint_y: 1
 
     MDBoxLayout:
         id: bx_main # Основной бокс в котором расположено все кроме тулбара
-        #x: toolbar.height
         size_hint_y: None
         size_hint_y: 1.0 - tb_upper.height/root.height
 
@@ -28,64 +33,41 @@ Screen:
             spacing: "10dp"
 
 # ---------- 1) ЛЕВЫЙ ИЛИ ВЕРХНИЙ БЛОК: --------- РЕЗУЛЬТАТЫ
-            MDBoxLayout:
-                id: c_input
-                orientation: 'vertical'
-                padding: "5dp"
-                spacing: "5dp"
-                size_hint_y: 0.4
+            MDCard:
+                id: cd_first
                 pos_hint: {"center_x": .5, "top": 1}
+                elevation: 10
 
                 MDBoxLayout:
-                    padding: ["10dp", "5dp","5dp","5dp"]
-                    pos_hint: {"center_x": .5, "top": 1}
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H6"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
+                    id: c_input
+                    orientation: 'vertical'
+                    padding: "5dp"
+                    spacing: "5dp"
+                    #size_hint_y: 0.4
+
+                    MDBoxLayout:
+                        padding: ["10dp", "5dp","5dp","5dp"]
+                        pos_hint: {"center_x": .5, "top": 1}
+                        MDLabel:
+                            text: "Ввод данных кредита"
+                            font_style: "H6"
+                            theme_text_color: "Primary"
+                            spacing: "5dp"
+                            size_hint_y: 1
+                            size_hint_x: .6
 
 # ---------- 2) ПРАВЫЙ ИЛИ НИЖНИЙ БЛОК: --------- ВВОД ПАРАМЕТРОВ
-            MDScrollViewRefreshLayout:
-                MDBoxLayout:
-                    orientation: "vertical"
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H3"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H3"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H3"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H3"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
-                    MDLabel:
-                        text: "Ввод данных кредита"
-                        font_style: "H3"
-                        theme_text_color: "Primary"
-                        spacing: "5dp"
-                        size_hint_y: 1
-                        size_hint_x: .6
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                MDLabel:
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text_color: [1,1,1,1]
+                    padding: 10, 10
+                    text:
+                        'really some amazing text\n' * 100
 
 #        ScreenManager:
 #            MDScreen:

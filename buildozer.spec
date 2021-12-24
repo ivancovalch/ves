@@ -3,26 +3,15 @@ title = Weigt
 package.name = CreditOverpay
 package.domain = org.test
 source.dir = .
-# (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
-# (list) List of inclusions using pattern matching
 source.include_patterns = assets/*, assets/images/*.png
-# (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
-# (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin
-# (list) List of exclusions using pattern matching
+source.exclude_dirs = tests, bin
 #source.exclude_patterns = license,images/*/*.jpg
-
-# (str) Application versioning (method 1)
-version = 0.21
-
-# (str) Application versioning (method 2)
+version = 0.22
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
-# (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
 requirements = python3,plyer,kivy==2.0.0,kivymd,https://github.com/kivymd/KivyMD/archive/3274d62.zip,sdl2_ttf==2.0.15
 
 # (str) Custom source folders for requirements
@@ -32,30 +21,18 @@ requirements = python3,plyer,kivy==2.0.0,kivymd,https://github.com/kivymd/KivyMD
 # (list) Garden requirements
 #garden_requirements =
 
-# (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
-
-# (str) Icon of the application
 #icon.filename = %(source.dir)s/data/icon.png
-
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
 
-#
 # OSX Specific
-#
-
-#
 # author = © Copyright Info
-
-# change the major version of python used by the app
 osx.python_version = 3
-
-# Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.0.0
 
 #
 # Android specific

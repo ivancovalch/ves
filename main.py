@@ -1,5 +1,6 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
+from kivy.uix.scrollview import ScrollView
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList
@@ -7,6 +8,9 @@ from kivymd.uix.list import MDList
 
 class MainApp(MDApp):
     def build(self):
+        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_hue = "A400"
+        self.theme_cls.theme_style = "Light"
         return Builder.load_file("main.kv")
 
     def on_start(self):
