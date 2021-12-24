@@ -49,12 +49,12 @@ android.presplash_color = silver
 # (list) Permissions
 #android.permissions = INTERNET
 
-android.api = 30
+#android.api = 30
 #android.minapi = 21
 #android.sdk = 20
 android.ndk = 23b
 #android.ndk_api = 22
-max
+
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
 
