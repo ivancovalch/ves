@@ -1,0 +1,18 @@
+MDScreen:
+    MDNavigationLayout:
+        ScreenManager:
+            MDScreen:
+                MDToolbar:
+                    title: "Navigation Drawer"
+                    elevation: 10
+                    pos_hint: {"top": 1}
+                    md_bg_color: [.91,.89,.75,1]#get_color_from_hex("#e7e4c0")
+                    specific_text_color: [.29,.29,.22,1] #get_color_from_hex("#4a4939")
+                    left_action_items:
+                        [['menu', lambda x: nav_drawer.set_state("open")]]
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            md_bg_color: [.97,.96,.91,1] # get_color_from_hex("#f7f4e7")
+            ContentNavigationDrawer:
