@@ -1,18 +1,68 @@
-MDScreen:
-    MDNavigationLayout:
-        ScreenManager:
-            MDScreen:
-                MDToolbar:
-                    title: "Navigation Drawer"
-                    elevation: 10
-                    pos_hint: {"top": 1}
-                    md_bg_color: [.91,.89,.75,1]#get_color_from_hex("#e7e4c0")
-                    specific_text_color: [.29,.29,.22,1] #get_color_from_hex("#4a4939")
-                    left_action_items:
-                        [['menu', lambda x: nav_drawer.set_state("open")]]
+Screen:
+    title: "Калькулятор фигуры"
+   #ti_loan: ti_loan
+    MDToolbar:
+        id: tb_upper
+        title: "Калькулятор фигуры"
+        type: "top"
+        left_action_items: [["menu", lambda x: app.callback()]]
+        right_action_items: [["exit-to-app", lambda x: app.stop()]]
+        #md_bg_color: [0,0,0,1]# app.theme_cls.accent_color
+        #specific_text_color: [.9,.9,.9,1]#app.theme_cls.accent_color
+        elevation: 10
+        pos_hint: {"top": 1, "center_x": .5}
+        #pos_hint_y: None
+        #pos_hint_y: 1
+
+    MDBoxLayout:
+        id: bx_main # Основной бокс в котором расположено все кроме тулбара
+        #x: toolbar.height
+        size_hint_y: None
+        size_hint_y: 1.0 - tb_upper.height/root.height
+
+        MDGridLayout: # корневой виджет включающий два основных горизонтальных элемента
+            id: main_container
+            rows: 2 #для вертикальной ориентации - смартфонов, этот параметр изменяется при запуске для планшетов и ПК
+            cols: 1
+            padding: "10dp"
+            spacing: "10dp"
+
+# ---------- ПРАВАЯ ИЛИ ВЕРХНЯЯ КАРТА - ВВОД ДАННЫХ
+            MDBoxLayout:
+                id: c_input
+                orientation: 'vertical'
+                padding: "5dp"
+                spacing: "5dp"
+                size_hint_y: 0.4
+                pos_hint: {"center_x": .5, "top": 1}
+
+                MDBoxLayout:
+                    padding: ["10dp", "5dp","5dp","5dp"]
+                    pos_hint: {"center_x": .5, "top": 1}
+                    MDLabel:
+                        text: "Ввод данных кредита"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        spacing: "5dp"
+                        size_hint_y: 1
+                        size_hint_x: .6
 
 
-        MDNavigationDrawer:
-            id: nav_drawer
-            md_bg_color: [.97,.96,.91,1] # get_color_from_hex("#f7f4e7")
-            ContentNavigationDrawer:
+
+
+#        ScreenManager:
+#            MDScreen:
+#                MDToolbar:
+#                    title: "Navigation Drawer"
+#                    elevation: 10
+#                    pos_hint: {"top": 1}
+#                    md_bg_color: [.91,.89,.75,1]#get_color_from_hex("#e7e4c0")
+#                    specific_text_color: [.29,.29,.22,1] #get_color_from_hex("#4a4939")
+#                    left_action_items:
+#                        [['menu', lambda x: nav_drawer.set_state("open")]]
+#
+#
+#        MDNavigationDrawer:
+#            id: nav_drawer
+#            md_bg_color: [.97,.96,.91,1] # get_color_from_hex("#f7f4e7")
+#            ContentNavigationDrawer:
