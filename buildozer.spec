@@ -52,7 +52,7 @@ android.presplash_color = silver
 #android.api = 30
 #android.minapi = 21
 #android.sdk = 20
-android.ndk = 23b
+#android.ndk = 23b
 #android.ndk_api = 22
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
