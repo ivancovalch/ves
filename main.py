@@ -6,12 +6,13 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList
 
 
+#KV = open('basic.kv', 'r').read()
 class MainApp(MDApp):
     def build(self):
-        self.theme_cls.primary_palette = "Blue"
-        self.theme_cls.primary_hue = "A400"
-        self.theme_cls.theme_style = "Light"
-        return Builder.load_file("main.kv")
+        self.theme_cls.primary_palette = "Brown" # цвет текста
+        self.theme_cls.primary_hue = "A400" # оттенок цветовых элементов
+        self.theme_cls.theme_style = "Light" # Цвет фона
+        return Builder.load_file('basic.kv')  # аргумент не нужен т.к. имя файла basic.kv совпадает с именем проекта и поэтому он будет загружен по умолчанию
 
     def on_start(self):
         icons_item = {
