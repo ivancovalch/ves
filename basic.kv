@@ -1,13 +1,20 @@
+<Cstandart@MDCard>: # ОСНОВНАЯ карточка или бокс
+    pos_hint: {"center_x": .5, "top": 1}
+    padding: [dp(5), dp(5), dp(5), dp(5)]
+
 <Bstandart@MDBoxLayout>: #Стандартный бокс
     orientation: 'horizontal'
-    padding: ["5dp", "5dp","5dp","5dp"]
+    padding: [dp(10), dp(20), dp(10), 0]
     spacing: "5dp"
-    pos_hint: {"center_x": .5, "top": 1}
+    size_hint_y: None
+    height: dp(50) #"30dp"
+    #pos_hint: {"center_x": .5, "top": 1}
 
 <Lstandart@MDLabel>: #Текстовый элемент ввода данных
     theme_text_color: "Primary"
-    spacing: "5dp"
+    spacing: dp(10)
     text_size: self.width, self.height
+    pos_hint: {"center_x": .5, "top": 1}
     valign: "top"
 
 <LabelEnter@MDLabel>: #Текстовый элемент ввода данных
@@ -16,6 +23,19 @@
     spacing: "5dp"
     size_hint_y: None
     size_hint_y: "30dp"
+
+<TInput@MDTextField>: #Текстовый элемент ввода данных
+    icon_color: "primary"
+    font_style: "Caption"
+    hint_text_color: [0.8, 0.8, 0.8, 1.0]
+    input_filter: 'int'
+    max_text_length: 12
+    #helper_text: "Введите число > 0"
+    helper_text_mode: "on_error"
+    #padding: [2,2,2,2]
+    pos_hint: {"center_y": 0.5,"right": 1}
+    halign: "left"
+
 #
 MDScreen:
     title: "Калькулятор фигуры"
@@ -46,53 +66,310 @@ MDScreen:
 # ---------- 1) ЛЕВЫЙ ИЛИ ВЕРХНИЙ БЛОК: --------- РЕЗУЛЬТАТЫ
             MDCard: # ОСНОВНАЯ карточка или бокс
                 id: cd_first
-                pos_hint_y: 0 # pos_hint: {"center_x": .5, "top": 1}
-                elevation: 2
+                pos_hint: {"center_x": .5, "top": 1}
+                elevation: 10
+                orientation: "vertical"
 
-                Bstandart: # 1ая ГЛАВНАЯ горизонтальная карточка | бокс
-                    id: b_res_main_left
-                    Bstandart: # ОСНОВНОЙ левый верхний блок
-                        Lstandart:
-                            id: l_res_main_left
-                            text: "Результаты"
-                            font_style: "H6"
-                            pos_hint: {"center_x": .5, "top": 1}
-                    Bstandart: # ОСНОВНОЙ правый верхний блок верхний блок
-                        id: b_res_main_left
-                        pos_hint: {"right": 1, "top": 1}
-                        Lstandart:
-                            id: l_res_main_right
-                            text: "так себе"
-                            font_style: "H6"
-                            pos_hint: {"center_x": .5, "top": 1}
-                            halign: "right"
-                Bstandart: # 1ая НИЗ горизонтальная карточка | бокс
+                Bstandart: # КАЧЕСТВЕННАЯ ОЦЕНКА
+                    Lstandart:
+                        id: l_iweight_text
+                        text: "Идеал веса (2 показателя)"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_iweight_val
+                        text: "ОЦЕНКА"
+                        font_style: "H6"
+                        halign: "right"
+
+                Bstandart: # BMI
                     id: b_res_main_scale
+                    Lstandart:
+                        id: l_bmi_text
+                        text: "Индекс массы тела"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_bmi_weight
+                        text: "ЗНАЧЕНИЕ"
+                        font_style: "H6"
+                        halign: "right"
 
+
+                Bstandart: # BMI
+                    id: b_res_main_scale
+                    Lstandart:
+                        id: l_bmi_main_left
+                        text: "С учетом конституации (3 показателя)"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_bmi_main_right
+                        text: "ОЦЕНКА"
+                        font_style: "H6"
+                        halign: "right"
+
+                Bstandart: # BMI
+                    id: b_res_main_scale
+                    Lstandart:
+                        id: l_bmi_main_left
+                        text: "С учетом конституации (6 показателей)"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_bmi_main_right
+                        text: "ОЦЕНКА"
+                        font_style: "H6"
+                        halign: "right"
+
+                Bstandart: # BMI
+                    id: b_res_main_scale
+                    Lstandart:
+                        id: l_bmi_main_left
+                        text: "Идеал фитнес-бикини"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_bmi_main_right
+                        text: "ОЦЕНКА"
+                        font_style: "H6"
+                        halign: "right"
+
+                Bstandart: # BMI
+                    id: b_res_main_scale
+                    Lstandart:
+                        id: l_bmi_main_left
+                        text: "Идеал-культурист"
+                        font_style: "H6"
+                    Lstandart:
+                        id: l_bmi_main_right
+                        text: "ОЦЕНКА"
+                        font_style: "H6"
+                        halign: "right"
+
+                Bstandart: # СЛАЙДЕР
+                    id: b_slider
+                    MDSlider:
+                        id: slider
+                        size_hint_y: None
+                        height: dp(40) #"30dp"
+                        min: 50
+                        max: 260
+                        value: 170
+                        #color: app.theme_cls.accent_color
+                        value_track: True
+                        value_track_color: [1, 0, 0, 1]
+                        step: 1 # Шаг изменения шкалы
+                        value_track_color: [1, 0, 0, 1]
+                        value_track_width: dp(20)
 
 
 # ---------- 2) ПРАВЫЙ ИЛИ НИЖНИЙ БЛОК: --------- ВВОД ПАРАМЕТРОВ
             ScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
+                scroll_type: ['content','bars']
                 Bstandart:
                     orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    #pos_hint: {"center_x": .5, "top": 1}
 
-                    MDBoxLayout: # Ввод роста
-                        orientation: "horizontal"
+                    MDBoxLayout:#Bstandart:
+                        size_hint_y: None
+                        #width: self.minimum_width
+                        height: self.minimum_height
+                        padding: [dp(0),dp(0),dp(0),dp(10)]
+                        spacing: dp(5)
+
+                        MDBoxLayout:
+                            size_hint_x: None
+                            width: dp(48) #self.minimum_width
+
+                            MDIcon:
+                                icon: "human-male"
+                                user_font_size: dp(24)
+                                theme_text_color: "Custom"
+                                text_color: app.c_selected
+                            MDIcon:
+                                icon: "human-female"
+                                user_font_size: dp(24)
+                                theme_text_color: "Custom"
+                                text_color: app.c_unselected
+                                #pos_hint: {"left": 0, "top": 1}
+                                #size_hint: None, None
+
+                        TInput:
+                            id: i_age
+                            size_hint: None, None
+                            width:  dp(100)
+                            #pos_hint: {"center": .5,"top": 1}
+                            hint_text: "год рождения"
+                            text: "1990"
+                            input_filter: 'int'
+                            max_text_length: 4
+                            helper_text: "введите четырехзначное число"
+                            #size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_hheight')
+
+                        MDRaisedButton:
+                            id: b_metric
+                            text: "метрические"
+                            font_style: "Body2"
+                            halign: "right"
+                            md_bg_color: app.c_bg_light
+                            #line_color: app.c_selected
+                            theme_text_color: "Custom"
+                            text_color: app.c_selected
+                            elevation: 7
+                            pos_hint: {"right": 1, "top": 1}
+                            halign: "right"
+                            #on_active: app.cb_periods(self, self.active, True)
+                        MDRaisedButton:
+                            id: b_metric
+                            text: "имперские"
+                            font_style: "Body2"
+                            halign: "right"
+                            md_bg_color: .95, .95, .95, 1 # 1, 1, 1, 1 #
+                            theme_text_color: "Custom"
+                            text_color: .6, .6, .6, 1
+                            elevation: 2
+                            halign: "right"
+                            pos_hint: None, None
+                            pos_hint: {"right": 1, "top": 1}
+                            halign: "right"
+#                            font_style: "Body2"
+#                            halign: "right"
+                            #pos_hint: {"right": 1,"top": 1}
+                            #on_active: root.cb_periods(self, self.active, True)
+
+
+#----------------------
+
+                    Bstandart: # РОСТ
                         Lstandart:
+                            id: l_hheight
                             text: "Рост"
-                        MDTextField: #
+                            size_hint_x: .5
+                        TInput: #
                             id: i_hheight
-                    MDSlider:
-                        min: 50
-                        max: 260
+                            hint_text: ""
+                            text: "170"
+                            input_filter: 'float'
+                            max_text_length: 3
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_hheight')
 
+                    Bstandart: # ВЕС
+                        pos_hint: {"right": 1,"top": 1}
+                        Lstandart:
+                            id: l_weight
+                            text: "Вес"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_weight
+                            hint_text: ""
+                            text: "70"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_weight')
 
-                    Lstandart:
-                        text: "Вес"
-                    Lstandart:
-                        text: "Обхват кисти"
+                    Bstandart: # Обхват кисти
+                        Lstandart:
+                            id: l_wreck
+                            text: "Обхват запястья"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_wreck
+                            hint_text: ""
+                            text: "70"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_wreck')
+
+                    Bstandart: # Обхват грудной клетки
+                        Lstandart:
+                            id: l_chest
+                            text: "Обхват груди"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_chest
+                            hint_text: ""
+                            text: "70"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_chest')
+
+                    Bstandart: # Обхват груди
+                        Lstandart:
+                            id: l_chest
+                            text: "Грудь"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_chest
+                            hint_text: "обхват грудной клетки"
+                            text: "70"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_chest')
+
+                    Bstandart: # Обхват талии
+                        Lstandart:
+                            id: l_waist
+                            text: "Талия"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_waist
+                            hint_text: "обхват талии"
+                            text: "70"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_waist')
+
+                    Bstandart: # Обхват талии
+                        Lstandart:
+                            id: l_pelvis
+                            text: "Бедра"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_pelvis
+                            hint_text: "обхват бедер"
+                            text: "90"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_pelvis')
+#-------------- ДЕТАЛЬНЫЕ ДАННЫЕ
+                    Bstandart: # ШЕЯ
+                        Lstandart:
+                            id: l_neck
+                            text: "Шея"
+                            size_hint_x: .5
+                        TInput: #
+                            id: i_neck
+                            hint_text: "обхват шеи"
+                            text: "90"
+                            input_filter: 'float'
+                            max_text_length: 6
+                            helper_text: "Введите число > 0"
+                            size_hint_x: .5
+                            halign: "right"
+                            on_focus: app.f_on_focus(self, 'i_neck')
 #
 #
 #
