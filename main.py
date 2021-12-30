@@ -1,10 +1,12 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
 import os
+from vars import colors as colors
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.label import MDLabel
+from kivymd.uix.label import MDIcon
 from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -13,25 +15,39 @@ from kivymd.uix.list import MDList
 
 # ПЕРЕМЕННЫЕ
 winautosize = True # флаг с помощью которого выбираем тип  образования окна (для релизов - True, для отладки на ПК - False), затем задаем вручную
+#print (colors['yellow'])
+class Colorpallet():
+    def __init__(self, light = True):
+        self.primary = [1,1,0,1]
+        self.secondary = [1, 1, 0, 1]
+        self.bg = [1, 1, 1, 1]
 
 class MainApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        #print (dir(MDSlider))
+        col = Colorpallet()
+        print (col.bg)#(dir(MDIcon))
         self.theme_cls.primary_palette = "Brown" # цвет текста
         self.theme_cls.primary_hue = "A400" # оттенок цветовых элементов
         self.theme_cls.theme_style = "Light" # Цвет фона
+
         self.c_black = [0, 0, 0, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
         self.c_white = [1, 1, 1, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
         self.c_darkgray = [.3, .3, .3, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_navy = [.25, .2, 1, 1]
-        self.c_blue = [.4,.5,.95,1]
-        self.c_lightblue = [.45,.75,.9,1]
-        self.c_unselected = [.7, .7, .7, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_selected = [.87, .50, .1, 1] # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_hint_text = [.8, .8, .8, 1]
-        self.c_bg_light = [.98, .98, .98, 1] # пользовательский цвет ФОНА небольших элементов
+        self.c_gray = [.6, .6, .6, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
 
+        self.c_navy = [.25, .2, 1, 1]
+        self.c_blue = [.4, .5, .95, 1]
+        self.c_lightblue = [.45, .75, .9, 1]
+        self.c_green = [.3, .7, .2, 1]
+        self.c_yellow = [1, .85, .25, 1]
+        self.c_orange = [1, .65, .2, 1]
+
+        self.c_mrestext = [.34, .12, .12, 1]  # основной текстовый цвет
+        self.c_unselected = [.7, .7, .7, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
+        self.c_selected = [.55, .25, .07, 1]  # [.87, .50, .1, 1] # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
+        self.c_hint_text = [.8, .8, .8, 1]
+        self.c_bg_light = [.98, .98, .98, 1]  # пользовательский цвет ФОНА небольших элементов
         #current_path = os.getcwd() # путь к корневой директории программы
         self.screen = Builder.load_file('basic.kv')
 
