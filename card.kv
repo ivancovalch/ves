@@ -1,138 +1,173 @@
+# СТАНДАРТНЫЕ ЭЛЕМЕНТЫ ДЛЯ ВСЕГО ПРОЕКТА -----------------------
+<Cstandart@MDCard>: # ОСНОВНАЯ карточка или бокс
+    pos_hint: {"center_x": .5, "top": 1}
+    padding: [dp(5), dp(5), dp(5), dp(5)]
+
+<Bstandart@MDBoxLayout>: #Стандартный бокс
+    orientation: 'horizontal'
+    padding: [dp(5), dp(5), dp(5), dp(5)]
+    spacing: dp(5)
+    size_hint_y: None
+    height: dp(50) #"30dp"
+
+<Bnopad@MDBoxLayout>: #Бокс с минимальными границами
+    padding: [dp(0), dp(0), dp(0), dp(0)]
+    spacing: dp(5)
+    size_hint_y: None
+    height: self.minimum_height
+
+<Lstandart@MDLabel>: #Текстовый элемент ввода данных
+    theme_text_color: "Custom"#"Primary"
+    text_color:  app.col.selected#app.c_selected # app.c_mrestext # app.c_white
+    spacing: dp(10)
+    text_size: self.width, self.height
+    font_size: dp(16)
+    pos_hint: {"center_x": .5, "top": 1}
+    valign: "top"
+
+<Lleft@MDLabel>: #Левый заголовок результатов
+    font_style: "Body2"
+    theme_text_color: "Custom"
+    text_color:  app.col.selected
+    halign: "left"
+    valign: "bottom"
+    size_hint_x: .33
+
+<Lcenter@MDLabel>: #Левый заголовок результатов
+    font_style: "Body2"
+    theme_text_color: "Custom"
+    text_color:  app.col.selected
+    halign: "right"
+    valign: "bottom"
+    size_hint_x: .33
+
+<Lright@MDLabel>: #Левый заголовок результатов
+    font_style: "Body2"
+    theme_text_color: "Custom"
+    text_color:  app.col.selected
+    halign: "right"
+    valign: "bottom"
+    size_hint_x: .33
+
+<Lsmall@MDLabel>: #
+    theme_text_color: "Custom"
+    text_color: app.col.unselected
+    spacing: dp(10)
+    text_size: self.width, self.height
+    font_size: dp(12)
+    pos_hint: {"center_x": .5, "top": 1}
+    halign: "center"
+    valign: "top"
+
+<LabelEnter@MDLabel>: #Текстовый элемент ввода данных
+    font_style: "H6"
+    theme_text_color: "Custom"
+    text_color: app.col.darkgray
+    spacing: "5dp"
+    size_hint_y: None
+    size_hint_y: "30dp"
+
+<TInput@MDTextField>: #Текстовый элемент ввода данных
+    icon_color: "primary"
+    font_style: "Caption"
+    hint_text_color: app.col.hint_text
+    text_color: app.col.black
+    input_filter: 'int'
+    max_text_length: 12
+    #helper_text: "Введите число > 0"
+    helper_text_mode: "on_error"
+    #padding: [2,2,2,2]
+    pos_hint: {"center_y": 0.5,"right": 1}
+    halign: "left"
+
+# ОСНОВНОЙ РЕЗУЛЬТАТ -----------------------
 <Lbmi@MDLabel>: #Текстовый элемент ввода данных
     theme_text_color: "Custom"
-    text_color: app.c_white
+    text_color: app.col.white
     #font_style: "Caption"
     font_size: dp(10)
     #spacing: dp(5)
     text_size: self.width, self.height
     pos_hint: {"center_x": .5, "top": 1}
-    valign: "middle"
+    valign: "top" #"middle"
     halign: "left"
+<MDIstar@MDIcon>:
+    icon: "star"
+    halign: "left"
+    valign: "center"
+    font_size : dp(14)
 
-# ПРОСТОЙ ВЕС - КАРТОЧКА
-<Cbmi@MDCard>: # ОСНОВНАЯ карточка или бокс
-    padding: [dp(10), dp(10), dp(10), dp(10)]
+
+# Шкала навигации
+                # ТЕКСТОВЫЕ ПОДПИСИ К ШКАЛЕ --------------------------------------
+<BMIhints@MDBoxLayout>: # подписи к шкале BMI
+    padding: [dp(0), dp(0), dp(0), dp(20)]
     spacing: dp(5)
-    md_bg_color: [.98, .96, .91, 1]
-    pos_hint: {"center_x": .5, "top": 1}
-    size_hint_y: None
-    height: self.minimum_height
-    elevation: 6
-
-    MDBoxLayout: # КАЧЕСТВЕННАЯ ОЦЕНКА
-        size_hint_y: None
-        height: self.minimum_height
-        pos_hint: {"center_x": .5, "top": 1}
-        orientation: "vertical"
-        padding: [dp(10), dp(10), dp(10), dp(10)]
-        spacing: dp(5)
-
-# ПЕРВАЯ ТЕКСТОВАЯ СТРОКА      -----------------------------------------------
-        Bnopad: # Заголовок
-            padding: [dp(0), dp(10), dp(0), dp(30)]
-            Lstandart:
-                id: l_iweight_text
-                text: "Вес любителя"
-                font_style: "H6"
-                halign: "left"
-            Lstandart:
-                id: l_iweight_val
-                text: "норма"
-                font_style: "Body2"
-                halign: "center"
-            Lstandart:
-                id: l_iweight_val
-                text: "9.0/10"
-                font_style: "Body2"
-                halign: "right"
-
-# ТЕКСТОВЫЕ ПОДПИСИ К ШКАЛЕ --------------------------------------
-        Bnopad: # подписи к шкале BMI
-            #size_hint_y: None
-            #height: dp(40)
-            spacing: dp(5)
-            Lsmall:
-                id: b_low
-                text: "Худоба"
-                text_color: app.c_lightblue
-                halign: "left"
-                size_hint_x: .45 #b_14bmi.width/root.width #+ b_16bmi.width
-            Lsmall:
-                id: b_norm
-                text: "Норма"
-                text_color: app.c_green
-                size_hint_x: .65 #b_14bmi.width/root.width #+ b_16bmi.width
-            Lsmall:
-                id: b_high
-                text: "Полнота"
-                text_color: app.c_yellow
-                size_hint_x: .5 #b_14bmi.width/root.width #+ b_16bmi.width
-            Lsmall:
-                id: b_fat
-                text: "Ожирение"
-                text_color: app.c_orange
-                size_hint_x: 1.5 #b_14bmi.width/root.width #+ b_16bmi.width
+    Lsmall:
+        id: b_low
+        text: "Худоба"
+        text_color: app.col.lightblue
+        halign: "left"
+        size_hint_x: .45 #b_14bmi.width/root.width #+ b_16bmi.width
+    Lsmall:
+        id: b_norm
+        text: "Норма"
+        text_color: app.col.green
+        size_hint_x: .65 #b_14bmi.width/root.width #+ b_16bmi.width
+    Lsmall:
+        id: b_high
+        text: "Полнота"
+        text_color: app.col.yellow
+        size_hint_x: .5 #b_14bmi.width/root.width #+ b_16bmi.width
+    Lsmall:
+        id: b_fat
+        text: "Ожирение"
+        text_color: app.col.orange
+        size_hint_x: 1.5 #b_14bmi.width/root.width #+ b_16bmi.width
 
 #   Шкала BMI -----------------------------------------------
-        Bnopad: # Шкала BMI
-            size_hint_y: None
-            height: dp(30)
-            padding: [dp(0), dp(0), dp(0), dp(0)]
-            spacing: dp(0)
-            Lbmi:
-                id: "b_14bmi" # Недостаток массы тела 3ей степени, Анорексия <16
-                text: "14"
-                size_hint_x: .2
-                md_bg_color: app.c_navy
-            Lbmi:
-                id: "b_16bmi" # Недостаток массы тела 2ей степени, 16-17
-                text: "16"
-                size_hint_x: .1
-                md_bg_color: app.c_blue
-            Lbmi:
-                id: "b_17bmi" # Недостаток массы тела 1ей степени, 17-18.5
-                text: "17"
-                size_hint_x: .15
-                md_bg_color: app.c_lightblue
-            Lbmi:
-                id: "b_19bmi" # Нормальная масса тела 18.5-25
-                text: "18.5"
-                size_hint_x: .65
-                md_bg_color: app.c_green
-            Lbmi:
-                id: "b_25bmi" # Избыточная масса тела 25-30
-                text: "25"
-                size_hint_x: .5
-                md_bg_color: app.c_yellow
-            Lbmi:
-                id: "b_30bmi" # Ожирение 1ой степени 30-35
-                text: "30"
-                size_hint_x: .5
-                md_bg_color: app.c_orange
-            Lbmi:
-                id: "b_35bmi" # Ожирение 2ой степени 35-40
-                text: "35"
-                size_hint_x: .5
-                md_bg_color: [1,.45,.2,1]
-            Lbmi:
-                id: "b_40bmi" # Ожирение 3ей степени >40
-                text: "40"
-                size_hint_x: .5
-                md_bg_color: [1,.25,.2,1]
-
-# -- СТРЕЛКА НАВИГАЦИИ
-        Bnopad: # Шкала BMI
-            padding: [dp(0), dp(0), dp(0), dp(0)]
-
-            MDIcon:
-                icon: "navigation"
-                theme_text_color: "Custom"
-                color: [.5,.5,.5,.5]
-
-        Bnopad: # Шкала BMI
-            padding: [dp(0), dp(15), dp(0), dp(10)]
-            Lsmall:
-                id: l_bmi
-                text: "Простая оценка ИМТ (индекса массы тела) по росту и весу "
-                #font_style: "Caption"
-                halign: "left"
+<BMIscale@MDBoxLayout>:
+    size_hint_y: None
+    height: dp(30)
+    padding: [dp(0), dp(0), dp(0), dp(0)]
+    spacing: dp(0)
+    Lbmi:
+        id: "b_14bmi" # Недостаток массы тела 3ей степени, Анорексия <16
+        text: "14"
+        size_hint_x: .2
+        md_bg_color: app.col.navy
+    Lbmi:
+        id: "b_16bmi" # Недостаток массы тела 2ей степени, 16-17
+        text: "16"
+        size_hint_x: .1
+        md_bg_color: app.col.blue
+    Lbmi:
+        id: "b_17bmi" # Недостаток массы тела 1ей степени, 17-18.5
+        text: "17"
+        size_hint_x: .15
+        md_bg_color: app.col.lightblue
+    Lbmi:
+        id: "b_19bmi" # Нормальная масса тела 18.5-25
+        text: "18.5"
+        size_hint_x: .65
+        md_bg_color: app.col.green
+    Lbmi:
+        id: "b_25bmi" # Избыточная масса тела 25-30
+        text: "25"
+        size_hint_x: .5
+        md_bg_color: app.col.yellow
+    Lbmi:
+        id: "b_30bmi" # Ожирение 1ой степени 30-35
+        text: "30"
+        size_hint_x: .5
+        md_bg_color: app.col.orange
+    Lbmi:
+        id: "b_35bmi" # Ожирение 2ой степени 35-40
+        text: "35"
+        size_hint_x: .5
+        md_bg_color: [1,.45,.2,1]
+    Lbmi:
+        id: "b_40bmi" # Ожирение 3ей степени >40
+        text: "40"
+        size_hint_x: .5
+        md_bg_color: [1,.25,.2,1]

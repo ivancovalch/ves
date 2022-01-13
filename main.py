@@ -1,7 +1,7 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
 import os
-from vars import colors as colors
+from vars import Colorpallet as Colorpallet
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.scrollview import ScrollView
@@ -12,45 +12,23 @@ from kivymd.uix.slider import MDSlider
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList
 
+from calculate import Calculate # Расчеты вес-фигура
 
 # ПЕРЕМЕННЫЕ
 winautosize = True # флаг с помощью которого выбираем тип  образования окна (для релизов - True, для отладки на ПК - False), затем задаем вручную
 #print (colors['yellow'])
-class Colorpallet():
-    def __init__(self, light = True):
-        self.primary = [1,1,0,1]
-        self.secondary = [1, 1, 0, 1]
-        self.bg = [1, 1, 1, 1]
 
 class MainApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        col = Colorpallet()
-        print (col.bg)#(dir(MDIcon))
+        self.col = Colorpallet()
+        print (self.col.bg)#(dir(MDIcon))
         self.theme_cls.primary_palette = "Brown" # цвет текста
         self.theme_cls.primary_hue = "A400" # оттенок цветовых элементов
         self.theme_cls.theme_style = "Light" # Цвет фона
 
-        self.c_black = [0, 0, 0, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_white = [1, 1, 1, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_darkgray = [.3, .3, .3, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_gray = [.6, .6, .6, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-
-        self.c_navy = [.25, .2, 1, 1]
-        self.c_blue = [.4, .5, .95, 1]
-        self.c_lightblue = [.45, .75, .9, 1]
-        self.c_green = [.3, .7, .2, 1]
-        self.c_yellow = [1, .85, .25, 1]
-        self.c_orange = [1, .65, .2, 1]
-
-        self.c_mrestext = [.34, .12, .12, 1]  # основной текстовый цвет
-        self.c_unselected = [.7, .7, .7, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_selected = [.55, .25, .07, 1]  # [.87, .50, .1, 1] # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
-        self.c_hint_text = [.8, .8, .8, 1]
-        self.c_bg_light = [.98, .98, .98, 1]  # пользовательский цвет ФОНА небольших элементов
         #current_path = os.getcwd() # путь к корневой директории программы
         self.screen = Builder.load_file('basic.kv')
-
         winsize = Window.size # считываем размер экрана
         winwidth = winsize[0] # ширина экрана
         winheight = winsize[1]# высота экрана
@@ -80,17 +58,6 @@ class MainApp(MDApp):
         return self.screen
 
     def on_start (self, **kwargs):
-        pass
-
-    def f_on_focus(self, instance, s_widgetid): # -- Обработка события фокус на элементе (колбэк возникает при каждой смене фокуса)
-        val = str(instance.focus) # получаем значение фокуса - ушел или пришел True
-        #Logger.info (f"f_on_focus: widget {s_widgetid} is: {str(instance.focus)}")
-        if instance.focus == False: # срабатывание после того как фокус побывал в поле, а затем был переведен на другое поле
-            pass # self.calculate () # ДОДЕЛАТЬ
-        else: # фокус пришел
-            self.screen.ids[s_widgetid].text = "" #очищаем текстовое поле
-
-    def on_start(self):
         icons_item = {
             "folder": "My files",
             "account-multiple": "Shared with me",
@@ -104,6 +71,39 @@ class MainApp(MDApp):
         #         ItemDrawer(icon=icon_name, text=icons_item[icon_name])
         #     )
 
+    def f_on_focus(self, instance, s_widgetid): # -- Обработка события фокус на элементе (колбэк возникает при каждой смене фокуса)
+        val = str(instance.focus) # получаем значение фокуса - ушел или пришел True
+        #Logger.info (f"f_on_focus: widget {s_widgetid} is: {str(instance.focus)}")
+        if instance.focus == False: # срабатывание после того как фокус побывал в поле, а затем был переведен на другое поле
+            self.calculate () # ДОДЕЛАТЬ
+        else: # фокус пришел
+            self.screen.ids[s_widgetid].text = "" #очищаем текстовое поле
+
+    def calculate(self): #расчеты параметров веса и фигуры
+        Calculate(self, self.screen)
+
+    def choose_metrics(self, metrics): # изменение оформления в зависимости от выбора типа единиц
+        b_active = 'b_metric'
+        b_passive = 'b_imperial'
+        print ("Activate metric system: " + b_active)
+        if metrics == False:
+            b_active = 'b_imperial'
+            b_passive = 'b_metric'
+        self.screen.ids[b_active].elevation = 7
+        self.screen.ids[b_active].text_color = self.col.selected
+        self.screen.ids[b_active].md_bg_color = self.col.bg_light
+        self.screen.ids[b_passive].elevation = 4
+        self.screen.ids[b_passive].text_color = self.col.gray
+        self.screen.ids[b_passive].md_bg_color = self.col.bg_medium
+
+
+    def choose_gender (self, gender): # установка пола - True - женщина, False - мужчина
+        if gender == True:
+            self.screen.ids.ic_male.text_color = self.col.selected
+            self.screen.ids.ic_female.text_color = self.col.lightray
+        else:
+            self.screen.ids.ic_male.text_color = self.col.lightray
+            self.screen.ids.ic_female.text_color = self.col.selected
 
 if __name__ == '__main__':
     MainApp().run()
