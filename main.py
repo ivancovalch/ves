@@ -1,6 +1,7 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
 import os
+import configparser
 from vars import Colorpallet as Colorpallet
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -54,6 +55,9 @@ class MainApp(MDApp):
             Window.fullscreen = False
             Window.size = (640,960)
 
+    def calculate(self): #расчеты параметров веса и фигуры
+        Calculate(self, self.screen)
+
     def build(self):
         return self.screen
 
@@ -70,6 +74,7 @@ class MainApp(MDApp):
         #     self.root.ids.content_drawer.ids.md_list.add_widget(
         #         ItemDrawer(icon=icon_name, text=icons_item[icon_name])
         #     )
+        self.calculate()
 
     def f_on_focus(self, instance, s_widgetid): # -- Обработка события фокус на элементе (колбэк возникает при каждой смене фокуса)
         val = str(instance.focus) # получаем значение фокуса - ушел или пришел True
@@ -78,9 +83,6 @@ class MainApp(MDApp):
             self.calculate () # ДОДЕЛАТЬ
         else: # фокус пришел
             self.screen.ids[s_widgetid].text = "" #очищаем текстовое поле
-
-    def calculate(self): #расчеты параметров веса и фигуры
-        Calculate(self, self.screen)
 
     def choose_metrics(self, metrics): # изменение оформления в зависимости от выбора типа единиц
         b_active = 'b_metric'
@@ -96,7 +98,6 @@ class MainApp(MDApp):
         self.screen.ids[b_passive].text_color = self.col.gray
         self.screen.ids[b_passive].md_bg_color = self.col.bg_medium
 
-
     def choose_gender (self, gender): # установка пола - True - женщина, False - мужчина
         if gender == True:
             self.screen.ids.ic_male.text_color = self.col.selected
@@ -104,6 +105,36 @@ class MainApp(MDApp):
         else:
             self.screen.ids.ic_male.text_color = self.col.lightray
             self.screen.ids.ic_female.text_color = self.col.selected
+        self.calculate() # запускаем функцию для расчета всех параметров
+
+# Create a config file
+def createConfig(path):
+    config = configparser.ConfigParser()
+    config.add_section("Settings")
+    config.set ("Settings", "locale", "ru_RU" ) # локализация используемая по умолчанию
+    #config.set("Settings", "font", "Courier")
+    #config.set("Settings", "font_size", "10")
+    #config.set("Settings", "font_style", "Normal")
+    #config.set("Settings", "font_info", "You are using %(font)s at %(font_size)s pt")
+    with open(path, "w") as config_file:
+        config.write(config_file)
+# Create, read, update, delete config
+def crudConfig(path):
+    if not os.path.exists(path):
+        createConfig(path)
+    config = configparser.ConfigParser()
+    config.read(path)
+    # Читаем некоторые значения из конфиг. файла.
+    #font = config.get("Settings", "font")
+    #font_size = config.get("Settings", "font_size")
+    # Меняем значения из конфиг. файла.
+    #config.set("Settings", "font_size", "12")
+    # Удаляем значение из конфиг. файла.
+    #config.remove_option("Settings", "font_style")
+    # Вносим изменения в конфиг. файл.
+    with open(path, "w") as config_file:
+        config.write(config_file)
+
 
 if __name__ == '__main__':
     MainApp().run()
