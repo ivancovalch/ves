@@ -68,73 +68,84 @@ def Calculate(app, screen):
             else:
                 screen.ids[thebodyfig].color = app.col.lightray
 
-        # ТАЛИЯ (ЦЕНТРАЛЬНОЕ ОЖИРЕНИЕ)
-        if not True in [nv.height.error]:
-            print(f"AbdoObesy calculate")
-            ao = AbdoObesy (nv.waist.metric, nv.hip.metric, nv.height.metric, gender)
+        # ТАЛИЯ (ЦЕНТРАЛЬНОЕ ОЖИРЕНИЕ) --------------------------------------------------------------------
+    if not True in [nv.burst.error, nv.waist.error, nv.hip.error, nv.height.error]:
+        print(f"AbdoObesy calculate")
+        ao = AbdoObesy (nv.waist.metric, nv.hip.metric, nv.height.metric, gender)
 
-            # Визуализация
-            screen.ids.l_TitleWaist_resVerb.text = str(ao.integral)
-            screen.ids.l_wst_indic_norm.text = str(ao.waist)
-            screen.ids.l_wh_indic_norm.text = str(ao.WHR)
-            screen.ids.l_whh_indic_norm.text = str(ao.abdo_height)
+        # Текстовые значения нормализованных показателей
+        integral = ao.integral
 
-            indicator_list  = [ao.waist_to_normal, ao.WHR_normal, ao.abdo_height_normal]
-            widget_list     = ['l_wst_indic', 'l_wh_indic', 'l_whh_indic']
+        if integral < 40:
+            theIntcolor = app.col.deepred
+            int_verb = ""
+        elif integral < 70:
+            theIntcolor = app.col.red
+        elif integral < 100:
+            theIntcolor = app.col.orange
+        else:
+            theIntcolor = app.col.green
+        screen.ids.l_TitleWaist_resVerb.text = str(integral) + "/100"
 
-            for norm_val in range (0, len(indicator_list)): # перебираем нормализованные значения
-                indicator_to_norm = indicator_list[norm_val]
-                left_box_widg = widget_list[norm_val]+'_boxL'
-                center_box_widg = widget_list[norm_val] + '_boxC'
-                right_box_widg = widget_list[norm_val] + '_boxR'
-                # определяем цвет основной шкалы
-                if indicator_to_norm < 1:
-                    thecolor = app.col.green
-                elif indicator_to_norm < 1.15:
-                    thecolor = app.col.orange
-                elif indicator_to_norm < 1.3:
-                    thecolor = app.col.red
-                else:
-                    thecolor = app.col.deepred
+        # Нормализованные показатели
+        screen.ids.l_wst_indic_norm.text = str(ao.waist)
+        screen.ids.l_wh_indic_norm.text = str(ao.WHR)
+        screen.ids.l_whh_indic_norm.text = str(ao.abdo_height)
 
-                widget_text_res = widget_list[norm_val] + '_norm' # задаем цвет текстового элемента
-                screen.ids[widget_text_res].text_color = thecolor
+        indicator_list  = [ao.waist_to_normal, ao.WHR_normal, ao.abdo_height_normal]
+        widget_list     = ['l_wst_indic', 'l_wh_indic', 'l_whh_indic']
 
-                # Если у индикатора нормальное значение
-                if indicator_to_norm < 1:
-                    left_box_size = indicator_list[norm_val]/2 # относительная ширина левого (рабочего элемента)
-                    screen.ids[left_box_widg].size_hint_x = left_box_size  # размер левого бокса (шкала)
-                    center_box_size = .5 - left_box_size  # относительная среднего (до нормы)
-                    screen.ids[center_box_widg].size_hint_x = center_box_size
-                    screen.ids[right_box_widg].size_hint_x = .5
-                    # цветовая окраска
-                    screen.ids[left_box_widg].md_bg_color = thecolor
-                    screen.ids[center_box_widg].md_bg_color = app.col.lightray
-                    screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
+        for norm_val in range (0, len(indicator_list)): # перебираем нормализованные значения
+            indicator_to_norm = indicator_list[norm_val]
+            left_box_widg = widget_list[norm_val]+'_boxL'
+            center_box_widg = widget_list[norm_val] + '_boxC'
+            right_box_widg = widget_list[norm_val] + '_boxR'
+            # определяем цвет основной шкалы
+            if indicator_to_norm < 1:
+                thecolor = app.col.green
+            elif indicator_to_norm < 1.15:
+                thecolor = app.col.orange
+            elif indicator_to_norm < 1.3:
+                thecolor = app.col.red
+            else:
+                thecolor = app.col.deepred
 
-                # Если у индикатора значение больше нормы
-                elif indicator_to_norm < 2: # превышение но значение вписывается в шкалу
-                    screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
-                    center_add = (indicator_to_norm - 1)/2 # диапазон значени 0 +0.5
-                    screen.ids[center_box_widg].size_hint_x = center_add
-                    screen.ids[right_box_widg].size_hint_x = .5 - center_add
-                    # цветовая окраска
-                    screen.ids[left_box_widg].md_bg_color = app.col.green
-                    screen.ids[center_box_widg].md_bg_color = thecolor
-                    screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
-                    print (f"center add {center_add}")
+            widget_text_res = widget_list[norm_val] + '_norm' # задаем цвет текстового элемента
+            screen.ids[widget_text_res].text_color = thecolor
 
-                else:  # Индикатор больше >2
-                    screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
-                    screen.ids[center_box_widg].size_hint_x = .25
-                    screen.ids[right_box_widg].size_hint_x = .25
-                    # цветовая окраска
-                    screen.ids[left_box_widg].md_bg_color = thecolor
-                    screen.ids[center_box_widg].md_bg_color = thecolor
-                    screen.ids[center_box_widg].md_bg_color = thecolor
+            # Если у индикатора нормальное значение
+            if indicator_to_norm < 1:
+                left_box_size = indicator_list[norm_val]/2 # относительная ширина левого (рабочего элемента)
+                screen.ids[left_box_widg].size_hint_x = left_box_size  # размер левого бокса (шкала)
+                center_box_size = .5 - left_box_size  # относительная среднего (до нормы)
+                screen.ids[center_box_widg].size_hint_x = center_box_size
+                screen.ids[right_box_widg].size_hint_x = .5
+                # цветовая окраска
+                screen.ids[left_box_widg].md_bg_color = thecolor
+                screen.ids[center_box_widg].md_bg_color = app.col.lightray
+                screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
 
+            # Если у индикатора значение больше нормы
+            elif indicator_to_norm < 2: # превышение но значение вписывается в шкалу
+                screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
+                center_add = (indicator_to_norm - 1)/2 # диапазон значени 0 +0.5
+                screen.ids[center_box_widg].size_hint_x = center_add
+                screen.ids[right_box_widg].size_hint_x = .5 - center_add
+                # цветовая окраска
+                screen.ids[left_box_widg].md_bg_color = app.col.green
+                screen.ids[center_box_widg].md_bg_color = thecolor
+                screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
+                print (f"center add {center_add}")
 
-            # screen.ids.l_whh_indic_boxL.size_hint_x =
+            else:  # Индикатор больше >2
+                screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
+                screen.ids[center_box_widg].size_hint_x = .25
+                screen.ids[right_box_widg].size_hint_x = .25
+                # цветовая окраска
+                screen.ids[left_box_widg].md_bg_color = thecolor
+                screen.ids[center_box_widg].md_bg_color = thecolor
+                screen.ids[center_box_widg].md_bg_color = thecolor
+
 
 
 
