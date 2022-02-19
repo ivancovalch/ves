@@ -12,7 +12,7 @@ version = 0.22
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
-requirements = python3,plyer,kivy==2.0.0,kivymd,https://github.com/kivymd/KivyMD/archive/3274d62.zip,sdl2_ttf==2.0.15
+requirements = python3,plyer,kivy==2.0.0,kivymd
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
