@@ -6,7 +6,7 @@ from vars import Colorpallet as Colorpallet
 from kivy.core.window import Window
 import locale
 from calculate import Calculate # Расчеты вес-фигура
-from vars import ADictMeta, Words
+from vars import Words
 
 # ПЕРЕМЕННЫЕ
 winautosize = True # флаг с помощью которого выбираем тип  образования окна (для релизов - True, для отладки на ПК - False), затем задаем вручную
