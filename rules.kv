@@ -10,6 +10,34 @@
     size_hint_y: None
     height: dp(50) #"30dp"
 
+# БЛОК ТАЛИИ
+<Bsubrow@MDBoxLayout>: #Стандартный бокс
+    orientation: 'horizontal'
+    padding: [dp(20), dp(0), dp(20), dp(0)]
+    spacing: dp(0)
+    size_hint_y: None
+    height: dp(25) #"30dp"
+<Lright2@MDLabel>: #Левый заголовок результатов
+    font_size: dp(16)
+    #font_style: "Body2"
+    theme_text_color: "Custom"
+    text_color:  app.col.selected
+    halign: "right"
+    valign: "bottom"
+    size_hint_x: .2
+<GrBar2@MDGridLayout>: # сетка для размещения баров
+    cols: 3
+    rows: 1
+    size_hint_y: None
+    height: self.minimum_height
+    pos_hint: {"center_x": .5, "center_y": .5}
+<LBar@MDLabel>:
+    font_style: "Body2"
+    padding_x: "3dp"
+    size_hint_y: None
+    height: "15dp"
+    pos_hint: {"center_x": .5, "center_y": .5}
+
 <Bnopad@MDBoxLayout>: #Бокс с минимальными границами
     padding: [dp(0), dp(0), dp(0), dp(0)]
     spacing: dp(5)
@@ -26,7 +54,7 @@
     valign: "top"
 
 <Lleft@MDLabel>: #Левый заголовок результатов
-    font_style: "Body2"
+    font_style: "H6"
     theme_text_color: "Custom"
     text_color:  app.col.selected
     halign: "left"
@@ -49,8 +77,8 @@
     valign: "bottom"
     size_hint_x: .33
 
-<L2right@MDLabel>: #Левый заголовок результатов
-    font_style: "Body2"
+<L2left@MDLabel>: #Левый заголовок результатов
+    font_style: "H6"
     theme_text_color: "Custom"
     text_color:  app.col.selected
     halign: "left"
@@ -112,12 +140,18 @@
     halign: "left"
     valign: "center"
     font_size : dp(14)
+<MDfigure@MDIcon>:
+    icon: "star"
+    halign: "center"
+    valign: "center"
+    color: app.col.lightray
+    font_size : dp(30)
 
 
 # Шкала навигации
                 # ТЕКСТОВЫЕ ПОДПИСИ К ШКАЛЕ --------------------------------------
 <BMIhints@MDBoxLayout>: # подписи к шкале BMI
-    padding: [dp(0), dp(0), dp(0), dp(20)]
+    padding: [dp(20), dp(2), dp(20), dp(20)]
     spacing: dp(5)
     Lsmall:
         id: b_low
@@ -144,8 +178,8 @@
 #   Шкала BMI -----------------------------------------------
 <BMIscale@MDBoxLayout>:
     size_hint_y: None
-    height: dp(30)
-    padding: [dp(0), dp(0), dp(0), dp(0)]
+    height: dp(20)
+    padding: [dp(20), dp(-15), dp(20), dp(2)]
     spacing: dp(0)
     Lbmi:
         id: "b_14bmi" # Недостаток массы тела 3ей степени, Анорексия <16

@@ -1,7 +1,7 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
 import os
-import configparser
+import configparser as configparser
 from vars import Colorpallet as Colorpallet
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -13,7 +13,9 @@ from kivymd.uix.slider import MDSlider
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList
 
+import locale
 from calculate import Calculate # Расчеты вес-фигура
+from vars import ADictMeta, Words
 
 # ПЕРЕМЕННЫЕ
 winautosize = True # флаг с помощью которого выбираем тип  образования окна (для релизов - True, для отладки на ПК - False), затем задаем вручную
@@ -28,7 +30,29 @@ class MainApp(MDApp):
         self.theme_cls.primary_hue = "A400" # оттенок цветовых элементов
         self.theme_cls.theme_style = "Light" # Цвет фона
 
-        #current_path = os.getcwd() # путь к корневой директории программы
+        # ЛОКАЛИЗАЦИЯ
+        current_path = os.getcwd() # путь к корневой директории программы
+        localize_info = locale.getdefaultlocale()
+        locale_default = localize_info[0] # базовая информация о языке и стране локализации в виде списка
+        s_loc = localize_info[0].split("_")
+        locale_data         = locale.localeconv() # получаем словарь с ключевыми параметрами локали int_curr_symbol
+        self.lan_COUNTRY    = localize_info[0]
+        self.lan_country    = str.lower(self.lan_COUNTRY)
+        self.languager      = s_loc[0]
+        self.country        = s_loc[1]
+        config = configparser.ConfigParser()
+        path = f"locales/{self.lan_country}/{self.lan_country}.ini"
+        print (f"path: {path} country: {self.country}")
+        try:
+            config.read(path, encoding="utf-8")
+        except:
+            config.read("ru_ru.ini", encoding="utf-8") # файл локализации загружаемый по умолчанию (если для локализации пользователя не задан собственный файл)
+        section = 'STRINGS' # строковые переменные для подстановки в калькулятор
+        for key in config[section]:
+            Words[key] = config[section][key]
+        self.wrd = Words #создаем класс-словарь, где будут храниться все локализованные слова-термины используемые в программе
+        print(f"age: {self.wrd.age}")
+
         self.screen = Builder.load_file('basic.kv')
         winsize = Window.size # считываем размер экрана
         winwidth = winsize[0] # ширина экрана
@@ -74,6 +98,10 @@ class MainApp(MDApp):
         #     self.root.ids.content_drawer.ids.md_list.add_widget(
         #         ItemDrawer(icon=icon_name, text=icons_item[icon_name])
         #     )
+        # НАСТРОЙКИ
+        self.gender = 0 # пол не определен
+        self.metric = True # метрическая система
+
         self.calculate()
 
     def f_on_focus(self, instance, s_widgetid): # -- Обработка события фокус на элементе (колбэк возникает при каждой смене фокуса)
@@ -85,12 +113,17 @@ class MainApp(MDApp):
             self.screen.ids[s_widgetid].text = "" #очищаем текстовое поле
 
     def choose_metrics(self, metrics): # изменение оформления в зависимости от выбора типа единиц
-        b_active = 'b_metric'
-        b_passive = 'b_imperial'
-        print ("Activate metric system: " + b_active)
-        if metrics == False:
+        if metrics == True:
+            b_active = 'b_metric'
+            b_passive = 'b_imperial'
+            self.metric = True
+        else:
             b_active = 'b_imperial'
             b_passive = 'b_metric'
+            self.metric = True
+
+        print("Activate metric system: " + b_active)
+
         self.screen.ids[b_active].elevation = 7
         self.screen.ids[b_active].text_color = self.col.selected
         self.screen.ids[b_active].md_bg_color = self.col.bg_light
@@ -100,9 +133,11 @@ class MainApp(MDApp):
 
     def choose_gender (self, gender): # установка пола - True - женщина, False - мужчина
         if gender == True:
+            self.gender = 1
             self.screen.ids.ic_male.text_color = self.col.selected
             self.screen.ids.ic_female.text_color = self.col.lightray
         else:
+            self.gender = 2
             self.screen.ids.ic_male.text_color = self.col.lightray
             self.screen.ids.ic_female.text_color = self.col.selected
         self.calculate() # запускаем функцию для расчета всех параметров
@@ -111,7 +146,7 @@ class MainApp(MDApp):
 def createConfig(path):
     config = configparser.ConfigParser()
     config.add_section("Settings")
-    config.set ("Settings", "locale", "ru_RU" ) # локализация используемая по умолчанию
+    config.set ("Settings", "locale", "ru_ru" ) # локализация используемая по умолчанию
     #config.set("Settings", "font", "Courier")
     #config.set("Settings", "font_size", "10")
     #config.set("Settings", "font_style", "Normal")

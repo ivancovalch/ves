@@ -1,10 +1,9 @@
 #:include rules.kv
-
 MDScreen:
-    title: "Калькулятор фигуры"
+    title: app.wrd.progname
     MDToolbar:
         id: tb_upper
-        title: "Калькулятор фигуры"
+        title: app.wrd.progname
         type: "top"
         left_action_items: [["menu", lambda x: app.callback()]]
         right_action_items: [["exit-to-app", lambda x: app.stop()]]
@@ -37,15 +36,135 @@ MDScreen:
 
             # КАРТОЧКА С БАЗОВОЙ ОЦЕНКОЙ ИМТ: РОСТ-ВЕС
                 MDBoxLayout: # MDCard: # <Cbmi@MDCard>: ОСНОВНАЯ карточка или бокс
+                    orientation: "vertical"
                     padding: [dp(5), dp(5), dp(5), dp(5)]
-                    spacing: dp(5)
-                    md_bg_color: [.98, .96, .91, 1]
+                    spacing: dp(10)
+                    md_bg_color: [.99, .99, .98, 1]
                     size_hint: None, None
                     size_hint_x: 1
                     height: self.minimum_height
                     pos_hint: {"x": 0, "y": 1}
-                    #adaptive_height: True
-                    #elevation: 6
+
+            # ТАЛИЯ, ЦЕНТРАЛЬНОЕ ОЖИРЕНИЕ       -----------------------------------------------
+                    MDBoxLayout: # КАЧЕСТВЕННАЯ ОЦЕНКА
+                        size_hint_y: None
+                        height: self.minimum_height
+                        pos_hint: None, None
+                        pos_hint: {"center_x": .5, "top": 1}
+                        orientation: "vertical"
+                        md_bg_color: app.col.bg_pale
+                        padding: [dp(10), dp(10), dp(10), dp(10)]
+                        spacing: dp(5)
+
+                        Bstandart: # ЗАГОЛОВОК Тип фигуры
+                            padding: [dp(20), dp(20), dp(20), dp(20)]
+                            L2left:
+                                id: l_TitleWaist_text
+                                text: app.wrd.wst_title
+                            L2right:
+                                id: l_TitleWaist_resVerb
+                                text: ""
+
+                        Bsubrow:
+                            Lstandart: # Обхват талии
+                                id: l_wst_indic_text
+                                text: app.wrd.wst_indic
+                            GrBar2:
+                                LBar:
+                                    id: l_wst_indic_boxL  #
+                                LBar:
+                                    id: l_wst_indic_boxC  # правый сегмент полосы - шкалы переплаты - ПЕРЕПЛАТА
+                                LBar:
+                                    id: l_wst_indic_boxR  #
+                            Lright2:
+                                id: l_wst_indic_norm
+
+                        Bsubrow:  # Талия - к бедрам
+                            Lstandart:
+                                id: l_wh_indic_text
+                                text: app.wrd.wh_full
+                            GrBar2:
+                                LBar:
+                                    id: l_wh_indic_boxL  #
+                                LBar:
+                                    id: l_wh_indic_boxC  # правый сегмент полосы - шкалы переплаты - ПЕРЕПЛАТА
+                                LBar:
+                                    id: l_wh_indic_boxR  #
+                            Lright2:
+                                id: l_wh_indic_norm
+
+                        Bsubrow: # Талия/рост
+                            Lstandart:
+                                id: l_whh_indic_text
+                                text: app.wrd.whh
+                            GrBar2:
+                                LBar:
+                                    id: l_whh_indic_boxL  # левый сегмент полосы - шкалы переплаты - ТЕЛО ДОЛГА
+                                LBar:
+                                    id: l_whh_indic_boxC  # правый сегмент полосы - шкалы переплаты - ПЕРЕПЛАТА
+                                LBar:
+                                    id: l_whh_indic_boxR  # правый сегмент полосы - шкалы переплаты - ПЕРЕПЛАТА
+                            Lright2:
+                                id: l_whh_indic_norm
+
+
+                # ТИП ФИГУРЫ       -----------------------------------------------
+                    MDBoxLayout: # КАЧЕСТВЕННАЯ ОЦЕНКА
+                        size_hint_y: None
+                        height: self.minimum_height
+                        pos_hint: None, None
+                        pos_hint: {"center_x": .5, "top": 1}
+                        orientation: "vertical"
+                        md_bg_color: app.col.bg_pale
+                        padding: [dp(10), dp(10), dp(10), dp(10)]
+                        spacing: dp(5)
+
+                        Bstandart:
+                            padding: [dp(20), dp(20), dp(20), dp(20)]
+                            L2left:
+                                id: l_bodytype_text
+                                text: app.wrd.bodytype
+                            L2right:
+                                id: l_bodytype_resVerb
+                                text: ""
+
+                        Bstandart: # Тип фигуры
+                            spacing: dp(0)
+                            MDfigure:
+                                id: bfg_1
+                                icon: "timer-sand-empty"
+                            MDfigure:
+                                id: bfg_2
+                                icon: "timer-sand"
+                            MDfigure:
+                                id: bfg_3
+                                icon: "timer-sand"
+                                canvas.before:
+                                    PushMatrix
+                                    Rotate:
+                                        angle: 180
+                                        origin: self.center
+                                canvas.after:
+                                    PopMatrix
+                            MDfigure:
+                                id: bfg_4
+                                icon: "triangle"
+                            MDfigure: # перевернутый треугольник
+                                id: bfg_5
+                                icon: "triangle"
+                                canvas.before:
+                                    PushMatrix
+                                    Rotate:
+                                        angle: 180
+                                        origin: self.center
+                                canvas.after:
+                                    PopMatrix
+                            MDfigure:
+                                id: bfg_6
+                                icon: "crop-portrait"
+                            MDfigure:
+                                id: bfg_7
+                                icon: "cards-diamond"
 
                     MDBoxLayout: # КАЧЕСТВЕННАЯ ОЦЕНКА
                         size_hint_y: None
@@ -53,68 +172,52 @@ MDScreen:
                         pos_hint: None, None
                         pos_hint: {"center_x": .5, "top": 1}
                         orientation: "vertical"
-                        padding: [dp(10), dp(10), dp(10), dp(10)]
+                        md_bg_color: app.col.bg_pale
+                        padding: [dp(10), dp(10), dp(10), dp(30)]
                         spacing: dp(5)
 
-                # ПЕРВАЯ ТЕКСТОВАЯ СТРОКА      -----------------------------------------------
-
                         Bnopad: # Простой ИМТ
-                            padding: [dp(0), dp(10), dp(0), dp(20)]
-                            Lleft:
+                            padding: [dp(20), dp(20), dp(20), dp(20)]
+                            L2left:
                                 id: l_bmi_text
-                                text: "Индекс массы тела"
-                            Lcenter:
-                                id: l_bmi_resVerb
-                                text: ""
-                            Lright:
+                                text: app.wrd.bmifull
+                            L2right:
                                 id: l_bmi_resText
                                 text: ""
 
-                        Bnopad: # Телосложение
-                            padding: [dp(0), dp(0), dp(0), dp(20)]
-                            Lleft:
-                                id: l_bodytype_text
-                                markup: True
-                                text: "[b]Телосложение[/b]"
-                            Lcenter:
-                                id: l_bodytype_resVerb
-                                text: ""
-                            Lright:
-                                id: l_bodytype_resText
-                                text: ""
-
-                        Bnopad: # Телосложение
-                            padding: [dp(0), dp(0), dp(0), dp(20)]
-                            Lleft:
-                                id: l_brok_text
-                                text: "Индекс Брокка"
-                            Lcenter:
-                                id: l_brok_resVerb
-                                text: ""
-                            Lright:
-                                id: l_brok_resText
-                                text: ""
-
-
                     # ШКАЛА -----------------------------------------------------------
-                        BMIhints: # ТЕКСТОВЫЕ ПОДПИСИ К ШКАЛЕ ---------------------------------------
-                        BMIscale: #   Шкала BMI -----------------------------------------------------
-                        # -- СТРЕЛКА НАВИГАЦИИ
-                        Bnopad: # Шкала BMI
-                            padding: [dp(-10), dp(0), dp(-10), dp(0)]
+                        Bnopad: # -- СТРЕЛКА НАВИГАЦИИ
+                            padding: [dp(20), dp(10), dp(0), dp(20)]
+
                             Bnopad:
                                 id: b_navarrow
-                                pos_hint: {"right":  1, "top": 1}
-                                #pos_hint_x: .98
-                                size_hint_x: .1
-                                #pos: (1,1)
-                                MDIcon:
-                                    id: i_navarrow
-                                    icon: "navigation"
-                                    theme_text_color: "Custom"
-                                    color: app.col.selected
-                                    #halign: "left"
-                                    #pos:(1,1)
+                                orientation: "horizontal"
+
+                                Bnopad:
+                                    id: bmi_pos_L
+                                    padding: [dp(-20), dp(0), dp(0), dp(0)] # 20 - паддинг - 5 ширина значка
+                                    size_hint: .5, 1
+                                    MDIcon:
+                                        id: i_navarrow
+                                        icon: "navigation-outline"
+                                        canvas.before:
+                                            PushMatrix
+                                            Rotate:
+                                                angle: 180
+                                                origin: self.center
+                                        canvas.after:
+                                            PopMatrix
+                                        theme_text_color: "Custom"
+                                        color: app.col.selected
+
+                                Bnopad:
+                                    id: bmi_pos_R
+                                    size_hint: .5,1
+
+
+                        BMIscale: #   Шкала BMI -----------------------------------------------------
+                        BMIhints: # ТЕКСТОВЫЕ ПОДПИСИ К ШКАЛЕ ---------------------------------------
+
 
 # ---------- 2) ПРАВЫЙ ИЛИ НИЖНИЙ БЛОК: --------- ВВОД ПАРАМЕТРОВ
             ScrollView:

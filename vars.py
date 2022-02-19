@@ -1,3 +1,5 @@
+from formula import getKoef as getKoef
+
 class Colorpallet():
     def __init__(self, light = True):
         self.primary    = [1, 1, 0, 1]
@@ -23,17 +25,95 @@ class Colorpallet():
         self.unselected = [.65, .55, .35, 1] #[.7, .7, .7, 1]  # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
         self.selected   = [.45, .25, .05, 1] #[.55, .25, .07, 1]  # [.87, .50, .1, 1] # пользовательский цвет ВЫБРАННОГО ЭЛЕМЕНТА
         self.hint_text  = [.8, .8, .8, 1]
-        self.bg_medium = [.95, .95, .95, 1]  # пользовательский цвет ФОНА небольших элементов
+        self.bg_medium  = [.95, .95, .95, 1]  # пользовательский цвет ФОНА небольших элементов
+        self.bg_pale    = [.98, .96, .91, 1]  # пользовательский цвет ФОНА небольших элементов
         self.bg_light   = [.98, .98, .98, 1]  # пользовательский цвет ФОНА небольших элементов
         self.bg         = [.99, .99, .99, 1]
 
+# Связка классов для трансформации словарей в свойства классов.
+class ADictMeta(type): #
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+    def __getitem__(self, key):
+        return getattr(self, key)
+class Words(metaclass=ADictMeta):
+    pass
+
+# ПОЛЕ ВВОДА И ЕГО ПАРАМЕТРИЧЕСКИЕ ЗНАЧЕНИЯ
+# АРГУМЕНТЫ
+# min, - минимальное значение
+# std, - стандартное
+# max, - максимальное
+# widgetname - название поля для ввода данных,
+# type - тип данных, возможные значения "int", 'str', 'float', bool real=0
+class InputField ():
+    def __init__(self, min, std, max, type, widgetname):
+        self.min = min
+        self.std = std
+        self.max = max
+        self.type = type  # 0 - даты, 1 - длина, обхват, 2 - вес
+        self.widgetname = widgetname
+        # значения присваиваемые по умолчанию
+        self.metric = 0
+        self.error = False
+        self.errortype = 0
+
+# СЛОВАРЬ-КЛАСС ПАРАМЕТРОВ
 class Normval(): # допустимый диапазон значений (в метрической системе)
     def __init__(self):
-        self.birthyea        = {'min':1000, 'std': 2000, 'max':2022}
-        self.height          = {'min':130, 'std':170, 'max':250} # рост
-        self.weight          = {'min':20, 'std':70, 'max':450}
-        self.age             = {'min':10, 'std':30, 'max':130}
-        self.wreck          = {'min': 10, 'std': 19, 'max': 40}
+        self.birthyea        = InputField (1000, 2000,  2030,  0,    'i_birthyear') # дата рождения
+        self.height          = InputField (130,  170,   250,   1,  'i_hheight')              # рост
+        self.weight          = InputField (20,   70,    450,   2,  'i_weight') # Обхват грудной клетки
+        self.age             = InputField (10,   30,    130,   1,  'i_age') # Обхват грудной клетки
+        self.burst           = InputField (40,   90,    300,   1,  'i_chest') # Обхват грудной клетки
+        self.chest           = self.burst   # Обхват грудной клетки СИНОНИМ
+        self.waist           = InputField (40,   90,    300,   1,  'i_waist') # Обхват талии
+        self.hip             = InputField (40,   90,    300,   1,  'i_hip') # Обхват бедер
+
+    def input_ok(screen, widget):
+        pass
+
+    def input_error(screen, err, widget):
+        pass
+
+    # Чтение и проверка данных форм ввода
+    def check_inputs (self, screen, metrics = True):
+
+        koef = getKoef(metrics) # получаем коэффициенты (=1 при метрической системы, или иные, при имперской)
+
+        for key,value in self.__dict__.items():
+            errmes = 0 # сообщение об ошибке по умолчанию
+            try:
+                errmes = 1
+                str_from_input = screen.ids[value.widgetname].text
+                errmes = 2
+                num_val = float(str_from_input)
+                errmes = 3
+                num_val_m = num_val * koef[value.type] # переводим данные в метрическую систему
+                if num_val_m < value.min:
+                    errmes = 4 #f"Значение меньше допустимого {round(wreckmin, 1)}";
+                    raise ValueError;
+                if num_val > value.max:
+                    errmes = 5 # f"Значение больше допустимого {round(wreckmax, 1)}";
+                    raise ValueError;
+
+                value.metric = num_val_m
+                value.error = False
+                # input_error добавить действия по нормализации формы НЕТ ОШИБКИ
+
+            except:
+                value.error = True
+                value.errortype = errmes
+                value.metric = 0 # в случае ошибки присваиваем для расчетов нулевое значение
+                # input_ok добавить действия по информированию об ошибке и модификации ФОРМЫ ВВОДА
+
+            print(f"Read input: {key} value: {value.metric}  error: {value.error}") # логгирование
+
+    # Распечатка данных формы
+    def printmetric(self):
+        for key, value in self.__dict__.items():
+            print(f"{key} is: {value.metric}")
+
 
 class Weightcathegory:
     def __init__(self, code, min_index, max_index):
@@ -76,7 +156,6 @@ class BMI():
 
         # Количественные параметры оценки ИМТ
         bmi_quality = 100
-        arrow_position = (bmi - self.L2) / (self.diapason) # позиция стрелки на индикаторе
         if bmi > self.A:
             if bmi > self.F4:
                 bmi_quality = 0
@@ -90,9 +169,9 @@ class BMI():
                 arrow_position = 0
             else:
                 bmi_quality = 100 - (self.N - bmi ) / (self.N - self.L2) * 100
-                arrow_position = (bmi - self.L2) / self.diapason
+                arrow_position = (bmi - self.L3) / self.diapason
         else:
-            arrow_position = (bmi - self.L2) / self.diapason
+            arrow_position = (bmi - self.L3) / self.diapason
             #coordinates = {"left":  arrow_position, "top": 1}
 
         # Качественная оценка ИМТ________________________________
@@ -124,67 +203,5 @@ class BMI():
         self.arrow_position = arrow_position
         print (f"weight_normal_low: {weight_normal_low}  weight_normal_high: {weight_normal_high} overweight {overweight}")
 
-class Brok(): # расчет параметров центрального ожирения
-    def __init__(self, height, weight, wreck, s_gender = 'male'):
-        s_bodytype = 0  # нормостеник
-        f_bodytype_k = 1
-        # Оценка телосложения и коэффициента Брока в зависимости от запястья
-        if s_gender == "male":
-            if wreck < 18:
-                s_bodytype = -1  # астеник
-                f_bodytype_k = .9
-            if wreck > 20:
-                s_bodytype = 1  #
-                f_bodytype_k = 1.1
-        if s_gender == "female":
-            if wreck < 15:
-                s_bodytype = -1
-                f_bodytype_k = .9
-            if wreck > 17:
-                s_bodytype = 1
-                f_bodytype_k = 1.1
 
-        f_height_k = 100
-        if height < 160:
-            f_height_k = f_height_k + (height - 160) / 2
-        if height > 170:
-            f_height_k = f_height_k + (height - 170) / 2
-        f_brok_ideal_weight = (height  -  f_height_k) *  f_bodytype_k
-        overweight          = weight - f_brok_ideal_weight # избыточный (- дефицитный) вес, в кг
-        weight_to_ideal     = weight / f_brok_ideal_weight # соотношение фактического и идеального веса
-
-        # качественная оценка веса
-        brok_assessment = ""
-        if   weight_to_ideal < .7:
-            brok_assessment = "L2"
-        elif weight_to_ideal < .8:
-            brok_assessment = "L1"
-        elif weight_to_ideal < .9:
-            brok_assessment = "D"
-        elif weight_to_ideal < 1.05:
-            brok_assessment = "N"
-        elif weight_to_ideal < 1.15:
-            brok_assessment = "A"
-        elif weight_to_ideal < 1.3:
-            brok_assessment = "F1"
-        elif weight_to_ideal < 1.5:
-            brok_assessment = "F2"
-        elif weight_to_ideal < 2.0:
-            brok_assessment = "F3"
-        else: # все значения равные или превышающие self.F3
-            brok_assessment = "F4"
-
-        self.bodytype       = s_bodytype
-        self.brokbodytypeK  = f_bodytype_k
-        self.brokbodytypeK  = f_height_k
-        self.ideal_weight   = f_brok_ideal_weight
-        self.overweight     = overweight
-        self.brok_assessment = brok_assessment
-
-        def __iter__(self):
-            for attr, value in self.__dict__.iteritems():
-                print( f"{attr}: {value}")
-
-class CentObesy(): # расчет параметров центрального ожирения
-    pass
 
