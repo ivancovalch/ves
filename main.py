@@ -4,15 +4,6 @@ import os
 import configparser as configparser
 from vars import Colorpallet as Colorpallet
 from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.uix.scrollview import ScrollView
-from kivymd.uix.label import MDLabel
-from kivymd.uix.label import MDIcon
-from kivymd.uix.button import MDRaisedButton
-from kivymd.uix.slider import MDSlider
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import MDList
-
 import locale
 from calculate import Calculate # Расчеты вес-фигура
 from vars import ADictMeta, Words
@@ -120,7 +111,7 @@ class MainApp(MDApp):
         else:
             b_active = 'b_imperial'
             b_passive = 'b_metric'
-            self.metric = True
+            self.metric = False
 
         print("Activate metric system: " + b_active)
 

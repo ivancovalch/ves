@@ -135,11 +135,13 @@
     pos_hint: {"center_x": .5, "top": 1}
     valign: "top" #"middle"
     halign: "left"
+
 <MDIstar@MDIcon>:
     icon: "star"
-    halign: "left"
+    halign: "right"
     valign: "center"
     font_size : dp(14)
+
 <MDfigure@MDIcon>:
     icon: "star"
     halign: "center"
@@ -215,12 +217,12 @@
         id: "b_35bmi" # Ожирение 2ой степени 35-40
         text: "35"
         size_hint_x: .5
-        md_bg_color: [1,.45,.2,1]
+        md_bg_color: app.col.red
     Lbmi:
         id: "b_40bmi" # Ожирение 3ей степени >40
         text: "40"
         size_hint_x: .5
-        md_bg_color: [1,.25,.2,1]
+        md_bg_color: app.col.deepred
 
 
 #----------------------------------------------------------------------

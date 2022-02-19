@@ -7,15 +7,20 @@ def getKoef (metrics):
         koef[2] = .45359237  # 1 кг / 1 фун
     return koef
 
-
 # ТИП ФИГУРЫ, источники для формул: https://calculator-online.net/body-shape-calculator/
+# АРГУМЕНТЫ
 # обхываты: bust-грудь,
 # waist-талия,
 # hips-бедра,
 # highhip-верхняя часть бедер (опция)  - все значения float или int > 0 выраженые в метрических единицах (см)
+# ВОЗВРАЩАЕМОЕ ЗНАЧЕНИЕ
+
+class FatFromBody ():
+    def __init__(self, bust, waist, hips, gender):
+        pass
 
 class Bodytype ():
-    def __init__(self, bust, waist, hips, metric, highhip = 0):
+    def __init__(self, bust, waist, hips, gender=0, highhip = 0):
         self.bodytype = 0
         self.bodysubtype = ""
 
@@ -59,6 +64,15 @@ class Bodytype ():
         # Round
         elif B_min_W < 0 and H_min_W < 0 : # H_min_B >= 9 and H_min_W <  22.6
             self.bodytype = 7 # Round
+
+        # Оценка качества фигуры (0-5) в зависимости от пола (0,1,2) и типа фигуры (0-7)
+        body_quality_standart = [ # матрица стандартных значений
+        [0, 5, 5, 0, 0, 0, 3, 1], # элемент 0 не определенный пол
+        [0, 5, 5, 5, 0, 0, 2, 1], # элемент 1 ЖЕНЩИНЫ
+        [0, 5, 5, 3, 5, 2, 4, 1], # элемент 2 МУЖЧИНЫ
+        ]
+        self.body_quality = body_quality_standart[gender][self.bodytype]
+        print(f"self.body_quality {self.body_quality}")
 
 
 class Brok(): # расчет параметров центрального ожирения

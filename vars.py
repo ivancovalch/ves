@@ -16,7 +16,7 @@ class Colorpallet():
         self.blue       = [.4, .5, .95, 1]
         self.lightblue  = [.45, .75, .9, 1]
         self.green      = [.3, .7, .2, 1]
-        self.yellow     = [1, .85, .25, 1]
+        self.yellow     = [1, .75, .2, 1]
         self.orange     = [1, .65, .2, 1]
         self.red        = [1, .45, .2, 1]
         self.deepred    = [1, .25, .2, 1]
@@ -29,6 +29,8 @@ class Colorpallet():
         self.bg_pale    = [.98, .96, .91, 1]  # пользовательский цвет ФОНА небольших элементов
         self.bg_light   = [.98, .98, .98, 1]  # пользовательский цвет ФОНА небольших элементов
         self.bg         = [.99, .99, .99, 1]
+        # палитра качественных оценок 0 - не определенный тип, 1 - худшее (темно-красное)-5(отлично) - зеленое
+        self.quality_pallete = [self.selected, self.deepred, self.red, self.orange, self.yellow, self.green]
 
 # Связка классов для трансформации словарей в свойства классов.
 class ADictMeta(type): #

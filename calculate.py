@@ -14,18 +14,7 @@ def NoDataInfo(MiddleWidget, RightWidget,
     # screen.ids[RightWidget].text_color = app.col.unselected
     # screen.ids[RightWidget].halign = "right"
 
-# ЧТЕНИЕ ДАННЫХ ПОЛЕЙ ВВОДА И РАСЧЕТ ПОКАЗАТЕЛЕЙ ФИГУРЫ
-def Calculate(app, screen):
-    print ('Start calculation')
-
-    # Считываем показатели настроек
-    gender = app.gender     # пол -1 Ж, 0 - не определен, 1 - М
-    metric = app.metric  # флаг метрической системы
-    print (f"Metric {metric} gender {gender}")
-
-    nv = Normval() #создаем новый экземпляр класса с данными о мин-макс значениях переменных
-    nv.check_inputs(screen, metric) # расчет и проверка метрических значений
-
+def CalcBMI(app, screen, nv):
     # ИМТ________________________________
     if not True in [nv.height.error, nv.weight.error] : # если необходимые значения получены без ошибок
         bmicur = BMI () #создаем новый экземпляр класса BMI со стандартными значениями
@@ -50,28 +39,35 @@ def Calculate(app, screen):
 
         print(f"calculate BMI: {str(bmicur.bmiround)} asses qulity {bmicur.bmi_assessment} arrow_position {bmicur.arrow_position} diapason {bmicur.diapason}")
 
-# ТИП ФИГУРЫ И ТАЛИЯ _______________________________________
+def CalcBodyType(app, screen, nv):
+    # ТИП ФИГУРЫ И ТАЛИЯ _______________________________________
     if not True in [nv.burst.error, nv.waist.error, nv.hip.error]:
 
         # ТИП ФИГУРЫ
-        print (f"Bodytype calculate")
-        bt = Bodytype(nv.burst.metric, nv.waist.metric, nv.hip.metric, metric) # расчетный экземпляр класса "тип фигуры"
-        body_type_code = "bt"+str(bt.bodytype) # код типа фигуры
+        print(f"Bodytype calculate")
+        bt = Bodytype(nv.burst.metric, nv.waist.metric, nv.hip.metric, app.gender)  # расчетный экземпляр класса "тип фигуры"
+        quality_rate = bt.body_quality # качественная оценка типа фигуры
+        color_specified = app.col.quality_pallete[quality_rate] # выбираем цвет из палитры, на основе кач. оценки
+        body_type_code = "bt" + str(bt.bodytype)  # код типа фигуры
         print(f"body_type_code {body_type_code} bodytype {bt.bodytype}")
         screen.ids.l_bodytype_resVerb.text = app.wrd[body_type_code]
+        screen.ids.l_bodytype_resVerb.text_color = color_specified
         # подсвечивание картинки
-        bfg_select = "bfg_"+str(bt.bodytype) # наименование виджета, который нужно подсветить
-        for thebodyfig in ['bfg_1','bfg_2','bfg_3','bfg_4','bfg_5','bfg_6','bfg_7']: # перебираем список виджетов-картинок по идентификатору
+        bfg_select = "bfg_" + str(bt.bodytype)  # наименование виджета, который нужно подсветить
+        for thebodyfig in ['bfg_1', 'bfg_2', 'bfg_3', 'bfg_4', 'bfg_5', 'bfg_6',
+                           'bfg_7']:  # перебираем список виджетов-картинок по идентификатору
             if thebodyfig == bfg_select:
-                screen.ids[thebodyfig].color = app.col.selected
+                screen.ids[thebodyfig].color = color_specified
                 print(f"thebodyfig {thebodyfig}")
             else:
                 screen.ids[thebodyfig].color = app.col.lightray
 
         # ТАЛИЯ (ЦЕНТРАЛЬНОЕ ОЖИРЕНИЕ) --------------------------------------------------------------------
+
+def CalcWaist(app, screen, nv):
     if not True in [nv.burst.error, nv.waist.error, nv.hip.error, nv.height.error]:
         print(f"AbdoObesy calculate")
-        ao = AbdoObesy (nv.waist.metric, nv.hip.metric, nv.height.metric, gender)
+        ao = AbdoObesy(nv.waist.metric, nv.hip.metric, nv.height.metric, app.gender)
 
         # Текстовые значения нормализованных показателей
         integral = ao.integral
@@ -85,37 +81,40 @@ def Calculate(app, screen):
             theIntcolor = app.col.orange
         else:
             theIntcolor = app.col.green
-        screen.ids.l_TitleWaist_resVerb.text = str(integral) + "/100"
+        screen.ids.l_TitleWaist_resVerb.text = "[b]" + str(integral) + "[/b]" + "/100"
+        screen.ids.l_TitleWaist_resVerb.text_color = theIntcolor
 
         # Нормализованные показатели
         screen.ids.l_wst_indic_norm.text = str(ao.waist)
         screen.ids.l_wh_indic_norm.text = str(ao.WHR)
         screen.ids.l_whh_indic_norm.text = str(ao.abdo_height)
 
-        indicator_list  = [ao.waist_to_normal, ao.WHR_normal, ao.abdo_height_normal]
-        widget_list     = ['l_wst_indic', 'l_wh_indic', 'l_whh_indic']
+        indicator_list = [ao.waist_to_normal, ao.WHR_normal, ao.abdo_height_normal]
+        widget_list = ['l_wst_indic', 'l_wh_indic', 'l_whh_indic']
 
-        for norm_val in range (0, len(indicator_list)): # перебираем нормализованные значения
+        for norm_val in range(0, len(indicator_list)):  # перебираем нормализованные значения
             indicator_to_norm = indicator_list[norm_val]
-            left_box_widg = widget_list[norm_val]+'_boxL'
+            left_box_widg = widget_list[norm_val] + '_boxL'
             center_box_widg = widget_list[norm_val] + '_boxC'
             right_box_widg = widget_list[norm_val] + '_boxR'
             # определяем цвет основной шкалы
             if indicator_to_norm < 1:
                 thecolor = app.col.green
-            elif indicator_to_norm < 1.15:
+            elif indicator_to_norm < 1.1:
+                thecolor = app.col.yellow
+            elif indicator_to_norm < 1.2:
                 thecolor = app.col.orange
             elif indicator_to_norm < 1.3:
                 thecolor = app.col.red
             else:
                 thecolor = app.col.deepred
 
-            widget_text_res = widget_list[norm_val] + '_norm' # задаем цвет текстового элемента
+            widget_text_res = widget_list[norm_val] + '_norm'  # задаем цвет текстового элемента
             screen.ids[widget_text_res].text_color = thecolor
 
             # Если у индикатора нормальное значение
             if indicator_to_norm < 1:
-                left_box_size = indicator_list[norm_val]/2 # относительная ширина левого (рабочего элемента)
+                left_box_size = indicator_list[norm_val] / 2  # относительная ширина левого (рабочего элемента)
                 screen.ids[left_box_widg].size_hint_x = left_box_size  # размер левого бокса (шкала)
                 center_box_size = .5 - left_box_size  # относительная среднего (до нормы)
                 screen.ids[center_box_widg].size_hint_x = center_box_size
@@ -123,19 +122,19 @@ def Calculate(app, screen):
                 # цветовая окраска
                 screen.ids[left_box_widg].md_bg_color = thecolor
                 screen.ids[center_box_widg].md_bg_color = app.col.lightray
-                screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
+                screen.ids[right_box_widg].md_bg_color = [0, 0, 0, 0]
 
             # Если у индикатора значение больше нормы
-            elif indicator_to_norm < 2: # превышение но значение вписывается в шкалу
+            elif indicator_to_norm < 2:  # превышение но значение вписывается в шкалу
                 screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
-                center_add = (indicator_to_norm - 1)/2 # диапазон значени 0 +0.5
+                center_add = (indicator_to_norm - 1) / 2  # диапазон значени 0 +0.5
                 screen.ids[center_box_widg].size_hint_x = center_add
                 screen.ids[right_box_widg].size_hint_x = .5 - center_add
                 # цветовая окраска
                 screen.ids[left_box_widg].md_bg_color = app.col.green
                 screen.ids[center_box_widg].md_bg_color = thecolor
-                screen.ids[right_box_widg].md_bg_color = [0,0,0,0]
-                print (f"center add {center_add}")
+                screen.ids[right_box_widg].md_bg_color = [0, 0, 0, 0]
+                print(f"center add {center_add}")
 
             else:  # Индикатор больше >2
                 screen.ids[left_box_widg].size_hint_x = .5  # размер левого бокса (шкала)
@@ -145,6 +144,25 @@ def Calculate(app, screen):
                 screen.ids[left_box_widg].md_bg_color = thecolor
                 screen.ids[center_box_widg].md_bg_color = thecolor
                 screen.ids[center_box_widg].md_bg_color = thecolor
+
+
+# ЧТЕНИЕ ДАННЫХ ПОЛЕЙ ВВОДА И РАСЧЕТ ПОКАЗАТЕЛЕЙ ФИГУРЫ
+def Calculate(app, screen):
+    print ('Start calculation')
+
+    # Считываем показатели настроек
+    gender = app.gender     # пол -1 Ж, 0 - не определен, 1 - М
+    metric = app.metric  # флаг метрической системы
+    print (f"Metric {metric} gender {gender}")
+
+    nv = Normval() #создаем новый экземпляр класса с данными о мин-макс значениях переменных
+    nv.check_inputs(screen, metric) # расчет и проверка метрических значений
+
+    CalcBMI(app, screen, nv) # калькуляция BMI
+    CalcWaist(app, screen, nv)
+    CalcBodyType(app, screen, nv)
+
+
 
 
 
