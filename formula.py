@@ -1,3 +1,5 @@
+import math
+
 # ИНИЦИАЦИЯ КОНСТАНТ ПРОЕКТА
 def getKoef (metrics):
     koef = [1, 1, 1]
@@ -177,3 +179,34 @@ class AbdoObesy(): # расчет параметров центрального 
     def printmetric(self):
         for key, value in self.__dict__.items():
             print(f"{key} is: {value.metric}")
+
+# Расчет доли жира по методу Флота США
+# Источник: https: // medvisor.ru / services / navy - procent - zhira - v - tele /
+class FatUSNavy(): # расчет параметров центрального ожирения
+
+    def __init__(self, waist, hip, neck, height, gender=0):
+        print(f"FatUSNavy START")
+        fat_share=[0,0,0]
+        fat_share[1] = 495 / (1.0324 - 0.19077 * math.log10(waist-neck) + 0.15456 * math.log10(height)) - 450 # М
+        fat_share[2] = 495 / (1.29579 - 0.35004 * math.log10(waist+hip-neck) + 0.22100 * math.log10(height)) - 450 # Ж
+        fat_share[0] = (fat_share[1]+fat_share[2]) / 2  # для неопределенного пола
+
+        self.fat = round (fat_share[gender],1)
+        print (f"FatUSNavy {self.fat}")
+
+class FatYMCAmod(): # расчет параметров центрального ожирения
+
+    def __init__(self, waist, hip, neck, wreck, forearm, weight, gender=0):
+        print(f"FatUSNavy START")
+        fat_share=[0,0,0]
+        fat_share[1] = (4.15*waist - .082*weight - 94.42)/weight * 100  # М
+        fat_share[2] = (.268*weight - .318*wreck + .157*waist + .245*hip - .434*forearm - 8.987) / weight*100  # Ж
+        fat_share[0] = (fat_share[1]+fat_share[2]) / 2  # для неопределенного пола
+
+        self.fat = round (fat_share[gender],1)
+        print (f"FatUSNavy {self.fat}")
+
+
+
+
+

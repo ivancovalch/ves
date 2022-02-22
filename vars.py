@@ -63,14 +63,20 @@ class InputField ():
 # СЛОВАРЬ-КЛАСС ПАРАМЕТРОВ
 class Normval(): # допустимый диапазон значений (в метрической системе)
     def __init__(self):
-        self.birthyea        = InputField (1000, 2000,  2030,  0,    'i_birthyear') # дата рождения
-        self.height          = InputField (130,  170,   250,   1,  'i_hheight')              # рост
-        self.weight          = InputField (20,   70,    450,   2,  'i_weight') # Обхват грудной клетки
-        self.age             = InputField (10,   30,    130,   1,  'i_age') # Обхват грудной клетки
-        self.burst           = InputField (40,   90,    300,   1,  'i_chest') # Обхват грудной клетки
+        self.birthyea        = InputField (1000, 2000,  2030,   0,    'i_birthyear') # дата рождения
+        self.height          = InputField (130,  170,   250,    1,  'i_hheight')              # рост
+        self.weight          = InputField (20,   70,    450,    2,  'i_weight') # Обхват грудной клетки
+        self.age             = InputField (10,   30,    130,    1,  'i_age') # Обхват грудной клетки
+        self.burst           = InputField (40,   90,    300,    1,  'i_chest') # Обхват грудной клетки
         self.chest           = self.burst   # Обхват грудной клетки СИНОНИМ
-        self.waist           = InputField (40,   90,    300,   1,  'i_waist') # Обхват талии
-        self.hip             = InputField (40,   90,    300,   1,  'i_hip') # Обхват бедер
+        self.waist           = InputField (40,   90,    300,    1,  'i_waist') # Обхват талии
+        self.hip             = InputField (40,   90,    300,    1,  'i_hip') # Обхват бедер
+        self.neck            = InputField (15,   60,    300,    1, 'i_neck')  # шея
+        self.wreck           = InputField (10,   20,    50,     1, 'i_wreck')  # запястье
+        self.armR            = InputField (10,   30,    70,     1, 'i_armR')  # рука (плечо) П
+        self.armL            = InputField (10,   30,    70,     1, 'i_armL')  # рука (плечо) Л
+        self.forearmR        = InputField (10,   25,    60,     1, 'i_forearmR')  # предплечье
+        self.forearmL        = InputField (10,   25,    60,     1, 'i_forearmL')  # предплечье
 
     def input_ok(screen, widget):
         pass
@@ -110,6 +116,10 @@ class Normval(): # допустимый диапазон значений (в м
                 # input_ok добавить действия по информированию об ошибке и модификации ФОРМЫ ВВОДА
 
             print(f"Read input: {key} value: {value.metric}  error: {value.error}") # логгирование
+
+    # Расчет средних значений размеров
+    def calcAverage (self):
+        pass
 
     # Распечатка данных формы
     def printmetric(self):

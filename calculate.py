@@ -4,6 +4,8 @@ from vars import Normval as Normval
 from formula import Brok as Brok
 from formula import Bodytype as Bodytype
 from formula import AbdoObesy as AbdoObesy
+from formula import FatUSNavy as FatUSNavy
+from formula import FatYMCAmod as FatYMCAmod
 
 def NoDataInfo(MiddleWidget, RightWidget,
                absentData=""):  # информирование об отсутствии данных в полях результатов (1ая карта)
@@ -13,6 +15,13 @@ def NoDataInfo(MiddleWidget, RightWidget,
     # screen.ids[RightWidget].text = errmes
     # screen.ids[RightWidget].text_color = app.col.unselected
     # screen.ids[RightWidget].halign = "right"
+
+def CalcFat(app, screen, nv, gender):
+    if not True in [nv.waist.metric, nv.hip.error, nv.height.error, nv.neck.error]:
+        fatUSNavy = FatUSNavy(nv.waist.metric, nv.hip.metric, nv.neck.metric, nv.height.metric, gender) #
+    if not True in [nv.waist.metric, nv.hip.error, nv.wreck.error, nv.forearmR.metric, nv.weight.error, nv.neck.error]:
+        fatYMCA = FatYMCAmod(nv.waist.metric, nv.hip.metric, nv.neck.metric, nv.wreck.metric, nv.forearmR.metric, nv.weight.metric, gender) #
+
 
 def CalcBMI(app, screen, nv):
     # ИМТ________________________________
@@ -161,6 +170,7 @@ def Calculate(app, screen):
     CalcBMI(app, screen, nv) # калькуляция BMI
     CalcWaist(app, screen, nv)
     CalcBodyType(app, screen, nv)
+    CalcFat(app, screen, nv, gender)
 
 
 

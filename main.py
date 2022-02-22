@@ -70,9 +70,6 @@ class MainApp(MDApp):
             Window.fullscreen = False
             Window.size = (640,960)
 
-    def calculate(self): #расчеты параметров веса и фигуры
-        Calculate(self, self.screen)
-
     def build(self):
         return self.screen
 
@@ -93,15 +90,17 @@ class MainApp(MDApp):
         self.gender = 0 # пол не определен
         self.metric = True # метрическая система
 
-        self.calculate()
+        Calculate(self, self.screen)
 
     def f_on_focus(self, instance, s_widgetid): # -- Обработка события фокус на элементе (колбэк возникает при каждой смене фокуса)
         val = str(instance.focus) # получаем значение фокуса - ушел или пришел True
         #Logger.info (f"f_on_focus: widget {s_widgetid} is: {str(instance.focus)}")
         if instance.focus == False: # срабатывание после того как фокус побывал в поле, а затем был переведен на другое поле
-            self.calculate () # ДОДЕЛАТЬ
+            Calculate(self, self.screen) #
+            print (f"Focuse OUT from {str(s_widgetid)}")
         else: # фокус пришел
             self.screen.ids[s_widgetid].text = "" #очищаем текстовое поле
+            print(f"Focuse IN from {str(s_widgetid)}")
 
     def choose_metrics(self, metrics): # изменение оформления в зависимости от выбора типа единиц
         if metrics == True:
